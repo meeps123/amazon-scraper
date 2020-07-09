@@ -13,7 +13,7 @@ class AmazonScraper(scrapy.Spider):
 
     def start_requests(self):
         # starting urls for scraping
-        urls = ["https://www.amazon.in/s?k=mobile&ref=nb_sb_noss_2"]
+        urls = ["https://www.amazon.sg/s?k=baby+%26+kids&ref=nb_sb_noss_2"]
 
         for url in urls: yield scrapy.Request(url = url, callback = self.parse, headers = self.headers)
 
@@ -45,30 +45,7 @@ class AmazonScraper(scrapy.Spider):
 
     def parse_mobile(self, response):
         title = response.xpath("//span[@id='productTitle']//text()").get() or response.xpath("//h1[@id='title']//text()").get()
-        brand = response.xpath("//a[@id='bylineInfo']//text()").get() or "not specified"
-        rating = response.xpath("//div[@id='averageCustomerReviews_feature_div']").xpath("//span[@class='a-icon-alt']//text()").get()
 
-        price = response.xpath("//span[@id='priceblock_ourprice']//text()") or response.xpath("//span[@id='priceblock_dealprice']//text()")
-        print(price)
-        if len(price) > 1: price = price[1].get()
-        elif len(price) == 1: price = price[0].get()
-        else : price = price.get()
+        print(title)
 
-        colour = response.xpath("//div[@id='variation_color_name']/div/span[@class='selection']//text()").get() or "not defined"
-        instock = response.xpath("//div[@id='availability']").xpath("//span[@class='a-size-medium a-color-success']//text()").get() or "Out Stock"
-        instock = instock.strip() == "In stock."
-        reviews = response.xpath("//div[@class='a-expander-content reviewText review-text-content a-expander-partial-collapse-content']/span//text()").getall()
-        description_raw = response.xpath("//div[@id='featurebullets_feature_div']//span[@class='a-list-item']//text()").getall()
-
-        img_url = response.xpath("//img[@id='landingImage']/@data-old-hires").get() or response.xpath("//img[@id='imgBlkFront']/@src").get()
-
-        description = []
-        for description_temp in description_raw:
-            description.append(description_temp.strip())
-
-        print(title, brand, rating, price, colour, instock, img_url)
-        # print(final_review)
-        # print(reviews)
-        # print(description)
-
-        yield Mobile(title = title.strip(), brand = brand.strip(), rating = rating.strip(), price = price.strip(), colour = colour.strip(), instock = instock, reviews = reviews, description = description, image_urls = [img_url])
+        yield Mobile(title = title.strip())
