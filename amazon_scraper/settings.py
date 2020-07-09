@@ -14,6 +14,9 @@ BOT_NAME = 'amazon_scraper'
 SPIDER_MODULES = ['amazon_scraper.spiders']
 NEWSPIDER_MODULE = 'amazon_scraper.spiders'
 
+LOG_STDOUT = True
+LOG_FILE = '/content/drive/My Drive/Colab Notebooks/Miscellaneous/Shopee Code League/Title Translation/extra_data/scrapy_cli_output.txt'
+
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'amazon_scraper (+http://www.yourdomain.com)'
